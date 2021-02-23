@@ -1,3 +1,17 @@
+#
+.ipynb_checkpoints
+
+#vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Local History for Visual Studio Code
+.history/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -127,3 +141,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+itwac128.bin
+
+twitter128.bin
