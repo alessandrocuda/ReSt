@@ -25,6 +25,9 @@ import spacy_udpipe
 import spacy
 import language_tool_python
 
+def print_verbose(text, verbose = 0):
+    if verbose:
+        print(text)
 
 spacy_udpipe.download("it")
 
@@ -421,6 +424,7 @@ class Preprocessing:
         else:
             return "DIGLEN_" + str(len(str(val)))
 
+
     def __clean_some_punctuation(self, text):
         """
         Removes some punctuation.
@@ -517,6 +521,7 @@ class Preprocessing:
         for word in words:
             if len(word) > 26:
                 return "__LONG-LONG__"
+            print("normalize_number: {}".format(word))
             new_word = self.__normalize_numbers(word)
             if new_word != word:
                 word = new_word
@@ -525,7 +530,7 @@ class Preprocessing:
             else:
                 word = word.lower()
             result_words.append(word)
-            
+        print( ' '.join(result_words))
         return ' '.join(result_words)
 
     def __esclamations(self, text):
@@ -1077,7 +1082,7 @@ class Preprocessing:
                 
         return result
 
-    def preprocess_df(self, df, column_name, path, stemming=False):
+    def preprocess_df(self, df, column_name, path, stemming=False, verbose = 0):
         """
         Preprocesses the dataset and save the new dataset on the specified path.
 
@@ -1096,154 +1101,146 @@ class Preprocessing:
             Path where to save the preprocessed dataset.
             Example: 'train_val_datasets/train_val_no_hashtag_stemmed.csv'
         """
-        raw_cl = "raw"+column_name
+        raw_cl = "raw_"+column_name
         df[raw_cl] = df[column_name]
 
         #Removing URLs
-        print("Removing URLs")
+        print_verbose("Removing URLs", verbose=verbose)
         df[column_name] = df[column_name].apply(self.__clean_url)
         
         #Removing Tags
-        print("Removing Tags")
+        print_verbose("Removing Tags", verbose=verbose)
         df[column_name] = df[column_name].apply(self.__clean_tag)
         
         #Support dataframe
         df_app = df.copy()
 
         #Feature extraction: length of the comment
-        print("Feature extraction: length of the comment")
+        print_verbose("Feature extraction: length of the comment", verbose=verbose)
         df['text_length'] = df[column_name].apply(self.__text_length)
 
         #Translation of emoji
-        print("Translation of emoji")
+        print_verbose("Translation of emoji", verbose=verbose)
         df[column_name] = df[column_name].apply(self.__translate_emoji)
         
         #Translating emoticons
-        print("Translating emoticons")
+        print_verbose("Translating emoticons", verbose=verbose)
         df[column_name] = df[column_name].apply(self.__translate_emoticons)
         
         #Adding space before hashtag symbol '#'
-        print("Adding space before hashtag symbol '#'")
+        print_verbose("Adding space before hashtag symbol '#'", verbose=verbose)
         df[column_name] = df[column_name].apply(self.__add_space_before_hashtag)
         
         #Feature extraction: number of hashtags
-        print("Feature extraction: number of hashtags")
+        print_verbose("Feature extraction: number of hashtags", verbose=verbose)
         df['hashtags'] = df[column_name].apply(self.__count_hashtags)
 
         #Replacing hashtags
-        print("Replacing hashtags")
+        print_verbose("Replacing hashtags", verbose=verbose)
         df[column_name] = df[column_name].apply(self.__replace_hashtags)
         
         #Normalizing hashtags
-        print("Normalizing hashtags")
+        print_verbose("Normalizing hashtags", verbose=verbose)
         df_app[column_name] = df_app[column_name].apply(self.__normalize_hashtags)
         
         #Fixing hashtags
-        print("Fixing hashtags")
+        print_verbose("Fixing hashtags", verbose=verbose)
         df[column_name] = df[column_name].apply(self.__hashtag_fix)
         
-        #Normalizing numbers
-        print("Normalizing numbers")
-        df[column_name] = df[column_name].apply(self.__normalize_numbers)
-        
         #Removing _, \\n, \\ and /
-        print("clean_some_punctuation")
+        print_verbose("clean_some_punctuation", verbose=verbose)
         df[column_name] = df[column_name].apply(self.__clean_some_punctuation)
         
         #Adding space between lowercase and uppercase
-        print("Adding space between lowercase and uppercase")
+        print_verbose("Adding space between lowercase and uppercase", verbose=verbose)
         df[column_name] = df[column_name].apply(self.__add_space)
         
         #Converting all emoticons written in text
-        print("Converting all emoticons written in text")
+        print_verbose("Converting all emoticons written in text", verbose=verbose)
         df[column_name] = df[column_name].apply(self.__clean_emoticon_text)
         
         #Feature extraction: percentage of words written in CAPS-LOCK
-        print("Feature extraction: percentage of words written in CAPS-LOCK")
+        print_verbose("Feature extraction: percentage of words written in CAPS-LOCK", verbose=verbose)
         df['%CAPS-LOCK words'] = df[column_name].apply(self.__caps_lock_words)
         
         #Normalizing text
-        print("Normalizing text")
+        print_verbose("Normalizing text", verbose=verbose)
         df[column_name] = df[column_name].apply(self.__normalize_text)
         
         #Feature extraction: number of ‘!’ inside the text
-        print("Feature extraction: esclamations")
+        print_verbose("Feature extraction: esclamations", verbose=verbose)
         df['esclamations'] = df[column_name].apply(self.__esclamations)
 
         #Feature extraction: number of ‘?’ inside the text
-        print("Feature extraction: number of questions mark")
+        print_verbose("Feature extraction: number of questions mark", verbose=verbose)
         df['questions'] = df[column_name].apply(self.__questions)
 
         #Uncensoring the bad words
-        print("Uncensoring the bad words")
+        print_verbose("Uncensoring the bad words", verbose=verbose)
         df[column_name] = df[column_name].apply(self.__clean_censured_bad_words)
         
         #Removing hashtag symbol '#'
-        print("Removing hashtag symbol")
+        print_verbose("Removing hashtag symbol", verbose=verbose)
         df[column_name] = df[column_name].apply(self.__clean_hashtag_symbol)
         
         #Removing laughs
-        print("Removing laughs")
+        print_verbose("Removing laughs", verbose=verbose)
         df[column_name] = df[column_name].apply(self.__clean_laughs)
         
         #Removing nearby equal vowels
-        print("Removing nearby equal vowels")
+        print_verbose("Removing nearby equal vowels", verbose=verbose)
         df[column_name] = df[column_name].apply(self.__clean_vowels)
         
         #Removing nearby equal consonants if they are more than 2
-        print("Removing nearby equal consonants if they are more than 2")
+        print_verbose("Removing nearby equal consonants if they are more than 2")
         df[column_name] = df[column_name].apply(self.__clean_consonants)
         
         #Sticking the apostrophe (text)
-        print("Sticking the apostrophe (text)")
+        print_verbose("Sticking the apostrophe (text)", verbose=verbose)
         df[column_name] = df[column_name].apply(self.__stick_apostrophe_text)
         
         #Lemma
-        print("generate Lemma")
+        print_verbose("generate Lemma", verbose=verbose)
         df['lemma'] = df[column_name].apply(self.__lemma)
 
         #PoS
-        print("genererate PoS")
+        print_verbose("genererate PoS", verbose=verbose)
         df['pos'] = df_app[column_name].apply(self.__pos)
 
         #Dep
-        print("Generate Dep")
+        print_verbose("Generate Dep", verbose=verbose)
         df['dep'] = df_app[column_name].apply(self.__dep)
 
         #Word polarity
-        print("Generate Word polarity")
+        print_verbose("Generate Word polarity", verbose=verbose)
         df['word_polarity'] = df['lemma'].apply(self.__get_word_polarity)
 
         #Tokenization
-        print("Tokenization")
+        print_verbose("Tokenization", verbose=verbose)
         df['tokens'] = df[column_name].apply(self.__tokenization)
 
         #Sticking the apostrophe (tokens)
-        print("Sticking the apostrophe (tokens)")
+        print_verbose("Sticking the apostrophe (tokens)", verbose=verbose)
         df['tokens'] = df['tokens'].apply(self.__stick_apostrophe)
 
         #Stemming
-        print("Generate Stemming")
+        print_verbose("Generate Stemming", verbose=verbose)
         df['stem'] = df['tokens'].apply(self.__stemming)
 
         #Replacement of the abbreviations with the respective words
-        print("Replacement of the abbreviations with the respective words")
+        print_verbose("Replacement of the abbreviations with the respective words", verbose=verbose)
         df['tokens'] = df['tokens'].apply(self.__replace_abbreviation)
 
         #Replacing Acronyms
-        print("Replacing Acronyms")
+        print_verbose("Replacing Acronyms", verbose=verbose)
         df['tokens'] = df['tokens'].apply(self.__replace_acronyms)
 
-        #Replacing other emojis
-        #df['tokens'] = df['tokens'].apply(self.__replace_others_emojis)
-
         #Feature extraction: percentage of Bad Words
-        print("Feature extraction: percentage of Bad Words")
+        print_verbose("Feature extraction: percentage of Bad Words", verbose=verbose)
         df['%bad_words'] = df['tokens'].apply(self.__percentage_bad_words)
 
         #Saving the preprocessed dataframe
-        self.__save_df_csv(df.copy(), path)
-        # df.to_csv(path, index=False)
+        #self.__save_df_csv(df.copy(), path)
 
     def preprocess_str(self, text, hashtags=True, stemming=False):
         """
@@ -1332,9 +1329,6 @@ class Preprocessing:
 
         #Replacing Acronyms
         text = self.__replace_acronyms(text)
-
-        #Replacing other emojis
-        text = self.__replace_others_emojis(text)
 
         return text
 
