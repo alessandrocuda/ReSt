@@ -84,46 +84,54 @@ def load_w2v_model():
 def load_w2v_kvectors(path):
     KeyedVectors.load(path)
 
-def build_keras_embedding_matrix(wv, key_to_index):
-    vocab_size = len(wv.vocab) + 1
-    print('Vocab_size is {}'.format(vocab_size))
-    vec_size = wv.vector_size
-    vocab_size = len(wv.vocab) + 2 # plus the unknown word
+######################################
+#   build_keras_embedding_matrix
+####################################
+def get_index_key_association(wv):
+    key_to_index = {"<UNK>": 0}
+    index_to_key = {0: "<UNK>"}
+    for idx, word in enumerate(sorted(wv.vocab)):
+        key_to_index[word]  = idx+1 # which row in `weights` corresponds to which word?
+        index_to_key[idx+1] = word # which row in `weights` corresponds to which word?
+    return index_to_key, key_to_index
 
+def build_keras_embedding_matrix(wv, index_to_key=None):
+    print('Vocab_size is {}'.format(len(wv.vocab)))
+    vec_size = wv.vector_size
+    vocab_size = len(wv.vocab) + 1 # plus the unknown word
+    
+    if index_to_key is None:
+        index_to_key, _ = get_index_key_association(wv)
     # Create the embedding matrix where words are indexed alphabetically
     embedding_matrix = np.zeros(shape=(vocab_size, vec_size))
-    for idx in key_to_index: 
+    for idx in index_to_key: 
         #jump the first, words not found in embedding int 0 and will be all-zeros
         if idx != 0:
-            embedding_matrix[idx] = wv.get_vector(key_to_index[idx])
+            embedding_matrix[idx] = wv.get_vector(index_to_key[idx])
 
-    print('Embedding_matrix loaded')
+    print('Embedding_matrix with unk word loaded')
     print('Shape {}'.format(embedding_matrix.shape))
     return embedding_matrix, vocab_size
 
-def get_index_key_association(w2v):
-    index_to_key = {"<UNK>": 0}
-    key_to_index = {0: "<UNK>"}
-    for idx, word in enumerate(sorted(w2v.vocab)):
-        index_to_key[word]  = idx+1 # which row in `weights` corresponds to which word?
-        key_to_index[idx+1] = word # which row in `weights` corresponds to which word?
-    return index_to_key, key_to_index
 
 def get_int_seq(sentences, word_to_key):
-    return [ [word_to_key[word] for word in sentence]for sentence in sentences]
+    return [ [word_to_key[word] for word in sentence] for sentence in sentences]
 
+######################################
+#   manual
+####################################
 def sentence_to_emb(sentence, w2v, truncate = None, padding = False):
-  pad_token = [0]*w2v.vector_size
-  s_emb = [ w2v[word] if word in w2v.vocab else pad_token for word in sentence]
-  if truncate is not None:
-    s_emb = s_emb[:truncate] #truncate
-  if padding:
-    s_emb += [pad_token] * (truncate - len(s_emb))
-  return np.array(s_emb)
+    pad_token = [0]*w2v.vector_size
+    s_emb = [ w2v[word] if word in w2v.vocab else pad_token for word in sentence]
+    if truncate is not None:
+        s_emb = s_emb[:truncate] #truncate
+    if padding:
+        s_emb += [pad_token] * (truncate - len(s_emb))
+    return np.array(s_emb)
 
 def get_data_to_emb(data, w2v, truncate = None, padding = False):
-  X = [sentence_to_emb(sentence, w2v, truncate, padding) for sentence in data]
-  return np.array(X)
+    X = [sentence_to_emb(sentence, w2v, truncate, padding) for sentence in data]
+    return np.array(X)
 
 if __name__ == "__main__": 
 

@@ -15,7 +15,7 @@ list_features = ["lemma", "pos", "dep", "word_polarity", "tokens", "stem"]
 def load_csv_to_df():
     pass
 
-def load_csv_to_dict(path, sep = '\t'):
+def load_csv_to_dict(path, sep = '\t', verbose = 0):
     """df : input a dataframe that contains a collumn "tokens" that is a string of a list of words
     return a list of lists for the word2vec
     """
@@ -27,7 +27,8 @@ def load_csv_to_dict(path, sep = '\t'):
 
     dataset = pd.read_csv(path, sep=sep).to_dict('list')
     for k in list_features:
-        print("Converting data '{}' String in list of String".format(k))
+        if verbose:
+            print("Converting data '{}' String in list of String".format(k))
         dataset[k] = [elem.split() for elem in dataset[k]]
     return dataset
 
