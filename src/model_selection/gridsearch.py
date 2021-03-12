@@ -46,9 +46,10 @@ def cross_val(nn_model, X, y, kf, hyper_param):
         model = nn_model(input_shape, **hyper_param)
         best_callback = ReturnBestEarlyStopping(monitor="val_loss", patience=50, verbose=0, mode="min", restore_best_weights=True)
         history = model.fit(X_train, Y_train, batch_size=64, epochs=200, validation_data=(X_val_es, Y_val_es), callbacks=[best_callback], verbose = 0)
-
-        f1      = f1_score(X_train, Y_train, average="macro")
-        val_f1  = f1_score(X_val, Y_val, average="macro")
+        y_pred = np.where(model.predict(X_train) >0.5,1,0)
+        f1      = f1_score(Y_train, y_pred, average="macro")
+        y_pred = np.where(model.predict(X_val) >0.5,1,0)
+        val_f1  = f1_score(Y_val, y_pred, average="macro")
 
         folds_f1.append(val_f1)
         folds_results[name_fold] = {"f1": f1, "val_f1": val_f1}
