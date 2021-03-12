@@ -1,4 +1,7 @@
-from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.callbacks import EarlyStopping, Callback
+import numpy as np
+from sklearn.metrics import f1_score
+
 
 class ReturnBestEarlyStopping(EarlyStopping):
     def __init__(self, **kwargs):
@@ -12,3 +15,20 @@ class ReturnBestEarlyStopping(EarlyStopping):
             if self.verbose > 0:
                 print('Restoring model weights from the end of the best epoch.')
             self.model.set_weights(self.best_weights)
+
+
+class FCallback(Callback):
+  
+    def __init__(self, validation = (), verbose = 0):
+        self.validation = validation
+        self.verbose = verbose
+
+    def on_train_begin(self, logs={}):
+        self.f1 = []
+        self.val_f1 = []
+    def on_epoch_end(self, epoch, logs=None):
+        y_t =  self.validation[1]
+        y_p =  np.where(self.model.predict(self.validation[0]) > 0.5, 1, 0)
+        logs['val_f1'] =  f1_score(y_t, y_p, average='macro')
+        if self.verbose >0:
+          print("— val_f1: {}".format(logs['val_f1']))
