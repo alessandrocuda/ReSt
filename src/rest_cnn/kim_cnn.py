@@ -1,4 +1,4 @@
-def kim_cnn(input_shape, filters = 256, filter_sizes = [2,4,6], dropout_in = 0.5, dropout_ff=0.5, hn1 = 128, hn2=128, lr=0.01, print_model=False):
+def kim_cnn(input_shape, filters = 256, filter_sizes = [2,4,6], dropout = 0.5, hn=128, lr=0.01, print_model=False):
     import tensorflow as tf
     from tensorflow.keras.models import Model
     from tensorflow.keras.layers import Dropout
@@ -21,11 +21,11 @@ def kim_cnn(input_shape, filters = 256, filter_sizes = [2,4,6], dropout_in = 0.5
     l_merge     = Concatenate(axis=1)(convs)
 
     l_flat      = Flatten()(l_merge)
-    l_drop      = Dropout(dropout_in)(l_flat)
-    l_hidden    = Dense(hn1, activation='relu')(l_drop)
-    l_drop      = Dropout(dropout_ff)(l_hidden)
-    l_hidden    = Dense(hn2, activation='relu')(l_drop)
-    l_drop      = Dropout(dropout_ff)(l_hidden)
+    l_drop      = Dropout(dropout)(l_flat)
+    l_hidden    = Dense(hn, activation='relu')(l_drop)
+    l_drop      = Dropout(dropout)(l_hidden)
+    l_hidden    = Dense(hn, activation='relu')(l_drop)
+    l_drop      = Dropout(dropout)(l_hidden)
     l_out_st    = Dense(1, activation='sigmoid', name="st")(l_drop)  #dims output
 
     model_cnn   = Model(inputs=text_seq_input, outputs=l_out_st)

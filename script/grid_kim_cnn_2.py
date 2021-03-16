@@ -68,14 +68,13 @@ X_test_e = to_emb(X_test)
 
 
 param_grid_dict = {
-    "filters": [32, 64, 128, 256, 512],
-    "filter_sizes": [[1, 1, 1], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [4, 6, 7], [2, 4, 6], [4, 6, 6], [3, 6, 9], [2, 2, 2], [2, 4, 7], [4, 5, 7]],
-    "dropout_in":  [0.1, 0.3, 0.5, 0.7, 0.9],
-    "dropout_ff":  [0.1, 0.3, 0.5, 0.7, 0.9],
-    "hn1": [32, 64, 124, 256, 512, 1024],
-    "hn2": [32, 64, 124, 256, 512, 1024],
+    "filters": [256],
+    "filters": [32],
+    "filter_sizes": [[2, 3, 4], [3, 4, 5], [4, 5, 6]],
+    "dropout":  [0.1, 0.5, 0.9],
+    "hn": [64, 124, 512],
     "lr": [0.1, 0.01, 0.001, 0.0001],
 }
 
 result = gridsearch(param_grid_dict, kim_cnn, X_e, y, 5, 42, True, 1)
-save_grid_result("result_reg_freq.p", result)
+save_grid_result("result_kim_cnn_2.p", result)
