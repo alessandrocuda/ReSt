@@ -24,8 +24,6 @@ def kim_cnn(input_shape, filters = 256, filter_sizes = [2,4,6], dropout = 0.5, h
     l_drop      = Dropout(dropout)(l_flat)
     l_hidden    = Dense(hn, activation='relu')(l_drop)
     l_drop      = Dropout(dropout)(l_hidden)
-    l_hidden    = Dense(hn, activation='relu')(l_drop)
-    l_drop      = Dropout(dropout)(l_hidden)
     l_out_st    = Dense(1, activation='sigmoid', name="st")(l_drop)  #dims output
 
     model_cnn   = Model(inputs=text_seq_input, outputs=l_out_st)
