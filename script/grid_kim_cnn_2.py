@@ -69,7 +69,6 @@ X_test_e = to_emb(X_test)
 
 param_grid_dict = {
     "filters": [256],
-    "filters": [32],
     "filter_sizes": [[2, 3, 4], [3, 4, 5], [4, 5, 6]],
     "dropout":  [0.1, 0.5, 0.9],
     "hn": [64, 124, 512],
