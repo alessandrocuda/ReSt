@@ -10,7 +10,7 @@ from gensim.test.utils import datapath
 
 
 import sys
-#root_project = "/content/ReSt/" 
+#"/home/jupyter/Cudazzo_Volpi/ReSt/"
 root_project = "/Users/Alessandro/Dev/repos/ReSt/"
 #root_project = "/home/jupyter/ReSt/"
 
