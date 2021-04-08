@@ -118,6 +118,27 @@ def get_int_seq(sentences, word_to_key):
     return [ [word_to_key[word] for word in sentence] for sentence in sentences]
 
 ######################################
+#   POS
+####################################
+def get_index_key_pos_association(X):
+    key_to_index = {"<UNK>": 0}
+    index_to_key = {0: "<UNK>"}
+    unique_pos = set([pos for words in X for pos in words])
+
+    for idx, word in enumerate(sorted(unique_pos)):
+        key_to_index[word]  = idx+1 # which row in `weights` corresponds to which word?
+        index_to_key[idx+1] = word # which row in `weights` corresponds to which word?
+    return index_to_key, key_to_index
+
+def get_one_hot_pos(index_to_key_pos):
+    index_to_onehot_pos = {}
+    for idx in index_to_key_pos.keys():
+        ohe = [0 for _ in range(len(index_to_key_pos.keys()))]
+        ohe[idx] = 1
+        index_to_onehot_pos[idx]  = ohe # which row in `weights` corresponds to which word?
+    return index_to_onehot_pos
+
+######################################
 #   manual
 ####################################
 def sentence_to_emb(sentence, w2v, truncate = None, padding = False):

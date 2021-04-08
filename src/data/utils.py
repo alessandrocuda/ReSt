@@ -49,8 +49,8 @@ def str_to_list(string_list):
     return list_of_string
 
 
-def set_unkmark_token(sentences, w2v):
-    sentences = [ [word if word in w2v.vocab else '<UNK>' for word in sentence]for sentence in sentences]
+def set_unkmark_token(sentences, vocab):
+    sentences = [ [word if word in vocab else '<UNK>' for word in sentence]for sentence in sentences]
     return sentences
 
 def dtype_transformation(dict_dataset, keys):
