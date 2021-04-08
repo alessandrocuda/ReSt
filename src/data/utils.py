@@ -4,7 +4,9 @@ import pandas as pd
 from gensim.models import KeyedVectors
 from gensim.test.utils import datapath
 from collections import defaultdict
-
+import numpy as np
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+from src.data.word_embedding import get_int_seq
 
 map_hashtag_delimiter = {"<hashtag>": "<", "</hashtag>": ">"}
 
@@ -67,6 +69,28 @@ def add_tokens_vector(w2v_path):
                                   else wv_from_bin[map_hashtag_delimiter[elem]
                                   ] 
                                   for elem in elems] for elems in dataset["tokens"]]
+
+def load_data(dataset_dict, w2v, key_to_index, key_to_index_pos, embedding_matrix, max_text_len):
+    senteces = dataset_dict["tokens"]
+    X = dataset_dict["tokens"]
+    X = set_unkmark_token(X, w2v.vocab)
+    X = get_int_seq(X, key_to_index)
+    X = pad_sequences(X, maxlen=max_text_len, padding='post', truncating='post')
+    X = np.array(X)
+    
+    X_pos = dataset_dict["pos"]
+    X_pos = set_unkmark_token(X_pos, key_to_index_pos)
+    X_pos = get_int_seq(X_pos, key_to_index_pos)
+    X_pos = pad_sequences(X_pos, maxlen=max_text_len, padding='post', truncating='post')
+    X_pos = np.array(X_pos)
+
+    extra_feature = np.array([dataset_dict["hashtags"], dataset_dict["%CAPS-LOCK words"], dataset_dict["esclamations"], dataset_dict["questions"], dataset_dict["sentence_positive"], dataset_dict["sentence_negative"], dataset_dict["sentence_neutral"], dataset_dict["%bad_words"]]).T
+
+    y = np.array(dataset_dict["stereotype"])
+    return X, X_pos, extra_feature, y
+
+def to_emb(X, embedding):
+    return np.array([ [ embedding[index_word] for index_word in sentence] for sentence in X])
 
 if __name__ == "__main__": 
     dataset_path = '/Users/Alessandro/Dev/repos/SaRaH/dataset/haspeede2/preprocessed/dev/dev.csv'
