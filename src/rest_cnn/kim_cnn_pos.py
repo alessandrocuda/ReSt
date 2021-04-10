@@ -10,7 +10,7 @@ def kim_cnn_pos(input_shape, filters = 256, filter_sizes = [2,4,6], dropout = 0.
     """ HyperParameters """
 
     text_seq_input = Input(shape=input_shape, name="text")
-    pos_seq_input = Input(shape=(65,17, ), name="pos")
+    pos_seq_input = Input(shape=(65,16, ), name="pos")
     extra_feature = Input(shape=(8,), name="extra")
 
     convs = []
