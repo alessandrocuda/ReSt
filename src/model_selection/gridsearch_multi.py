@@ -48,7 +48,7 @@ def cross_val(get_score, data, kf, hyper_param):
         X_val = {"text": data["text"][val_index_fold], "pos": data["pos"][val_index_fold], "extra": data["extra"][val_index_fold]}
         Y_val = data["target"][val_index_fold]
 
-        folds_results[name_fold] = get_score(X_train, Y_train, X_val_es, Y_val_es, Y_val, y_pred,  hyper_param)
+        folds_results[name_fold] = get_score(X_train, Y_train, X_val_es, Y_val_es, Y_val,  hyper_param)
         folds_f1.append(folds_results[name_fold]["val_f1"])
 
     print({"hyper_parm": hyper_param, "mean": np.mean(folds_f1), "std": np.std(folds_f1)})
