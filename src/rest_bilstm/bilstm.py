@@ -53,7 +53,5 @@ def get_score(X_train, Y_train, X_val_es, Y_val_es, X_val, Y_val,  hyper_param):
     f1      = f1_score(Y_train, y_pred, average="macro")
     y_pred = np.where(model.predict(X_val) > 0.5, 1,0)
     val_f1  = f1_score(Y_val, y_pred, average="macro")
-
-    folds_f1.append(val_f1)
-    folds_result[name_fold] = {"f1": f1, "val_f1": val_f1}
-    return folds_result
+    
+    return  {"f1": f1, "val_f1": val_f1}
