@@ -38,7 +38,7 @@ def bilstm_text_pos_extra(input_shape_text, input_shape_pos, bi_units = 256, bi_
 
     return model_cnn
 
-def get_score(X_train, Y_train, X_val_es, Y_val_es, Y_val,  hyper_param):
+def get_score(X_train, Y_train, X_val_es, Y_val_es, X_val, Y_val,  hyper_param):
     from src.utils.callbacks import ReturnBestEarlyStopping
     import numpy as np
     from sklearn.metrics import f1_score
@@ -46,7 +46,7 @@ def get_score(X_train, Y_train, X_val_es, Y_val_es, Y_val,  hyper_param):
     input_shape_text = (X_train["text"][0].shape[0], X_train["text"][0].shape[1],)
     input_shape_pos = (X_train["pos"][0].shape[0], )
     model = bilstm_text_pos_extra(input_shape_text, input_shape_pos, **hyper_param)
-    best_callback = ReturnBestEarlyStopping(monitor="val_f1_macro", min_delta=0, verbose=1, mode="max", restore_best_weights=True)
+    best_callback = ReturnBestEarlyStopping(monitor="val_f1_macro", min_delta=0, verbose=0, mode="max", restore_best_weights=True)
     history = model.fit(X_train, Y_train, batch_size=64, epochs=20, validation_data=(X_val_es, Y_val_es), callbacks=[best_callback], verbose = 0)
 
     y_pred = np.where(model.predict(X_train) > 0.5, 1,0)
