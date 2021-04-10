@@ -9,9 +9,9 @@ def bilstm_text_pos_extra(input_shape_text, input_shape_pos, bi_units = 256, bi_
 
     """ HyperParameters """
 
-    text_seq_input = Input(shape=input_shape, name="text")
+    text_seq_input = Input(shape=input_shape_text, name="text")
     pos_seq_input = Input(shape=input_shape_pos, name="pos")
-    pos_emb = Embedding(17, 16, input_length=input_shape_pos[1])(pos_seq_input)
+    pos_emb = Embedding(17, 16, input_length=input_shape_pos[0])(pos_seq_input)
     extra_feature = Input(shape=(8,), name="extra")
 
     sentence_encoder = Bidirectional(LSTM(bi_units, return_sequences=False))(text_seq_input)
@@ -40,7 +40,7 @@ def bilstm_text_pos_extra(input_shape_text, input_shape_pos, bi_units = 256, bi_
 def get_score(X_train, Y_train, X_val_es, Y_val_es, Y_val,  hyper_param):
     input_shape_text = (X_train["text"][0].shape[0], X_train["text"][0].shape[1],)
     input_shape_pos = (X_train["pos"][0].shape[0], )
-    model = bilstm_text_pos_extra(input_shape, input_shape_pos **hyper_param)
+    model = bilstm_text_pos_extra(input_shape_text, input_shape_pos, **hyper_param)
     best_callback = ReturnBestEarlyStopping(monitor="val_f1_macro", min_delta=0, verbose=1, mode="max", restore_best_weights=True)
     history = model.fit(X_train, Y_train, batch_size=64, epochs=20, validation_data=(X_val_es, Y_val_es), callbacks=[best_callback], verbose = 0)
 
