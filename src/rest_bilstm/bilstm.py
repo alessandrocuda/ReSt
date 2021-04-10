@@ -40,7 +40,8 @@ def bilstm_text_pos_extra(input_shape_text, input_shape_pos, bi_units = 256, bi_
 
 def get_score(X_train, Y_train, X_val_es, Y_val_es, Y_val,  hyper_param):
     from src.utils.callbacks import ReturnBestEarlyStopping
-    
+    import numpy as np
+
     input_shape_text = (X_train["text"][0].shape[0], X_train["text"][0].shape[1],)
     input_shape_pos = (X_train["pos"][0].shape[0], )
     model = bilstm_text_pos_extra(input_shape_text, input_shape_pos, **hyper_param)
