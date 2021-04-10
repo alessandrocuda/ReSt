@@ -6,6 +6,7 @@ def bilstm_text_pos_extra(input_shape_text, input_shape_pos, bi_units = 256, bi_
     from tensorflow.keras.layers import Dense, Input, Flatten, Activation
     from tensorflow.keras.layers import Concatenate
     from tensorflow.keras.regularizers import l2
+    from src.utils.metrics import f1_macro
 
     """ HyperParameters """
 
