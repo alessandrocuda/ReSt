@@ -25,8 +25,12 @@ def cross_val(nn_model, data, kf, hyper_param):
     from src.utils.callbacks import ReturnBestEarlyStopping
     
     #physical_devices = tf.config.list_physical_devices('GPU')
-    #tf.config.experimental.set_memory_growth(physical_devices[0], True)
-    
+    if physical_devices:
+        try:
+            tf.config.experimental.set_memory_growth(physical_devices[0], True)
+        except RuntimeError as e:
+            print(e)
+            
     folds_f1 = []
     folds_results = {}
     i = 0

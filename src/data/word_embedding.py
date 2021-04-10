@@ -133,8 +133,9 @@ def get_index_key_pos_association(X):
 def get_one_hot_pos(index_to_key_pos):
     index_to_onehot_pos = {}
     for idx in index_to_key_pos.keys():
-        ohe = [0 for _ in range(len(index_to_key_pos.keys()))]
-        ohe[idx] = 1
+        ohe = [0 for _ in range(len(index_to_key_pos.keys())-1)]
+        if idx != 0:
+            ohe[idx-1] = 1
         index_to_onehot_pos[idx]  = ohe # which row in `weights` corresponds to which word?
     return index_to_onehot_pos
 
