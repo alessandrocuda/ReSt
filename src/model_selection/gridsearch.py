@@ -21,12 +21,21 @@ def product_dict(**kwargs):
 
 
 def cross_val(nn_model, X, y, kf, hyper_param):
-    #import tensorflow as tf
+    import tensorflow as tf
     from src.utils.callbacks import ReturnBestEarlyStopping
     
-    #physical_devices = tf.config.list_physical_devices('GPU')
-    #tf.config.experimental.set_memory_growth(physical_devices[0], True)
-    
+    physical_devices = tf.config.list_physical_devices('GPU')
+    if physical_devices:
+        try:
+            tf.config.experimental.set_memory_growth(physical_devices[0], True)
+        except RuntimeError as e:
+            print(e)
+    results_folds = { "loss": [],
+                          "val_loss": [],
+                          "f1_macro": [],
+                          "val_f1_macro": [] 
+    }
+
     folds_f1 = []
     folds_results = {}
     i = 0
@@ -46,17 +55,34 @@ def cross_val(nn_model, X, y, kf, hyper_param):
         model = nn_model(input_shape, **hyper_param)
         best_callback = ReturnBestEarlyStopping(monitor="val_loss", patience=50, verbose=0, mode="min", restore_best_weights=True)
         history = model.fit(X_train, Y_train, batch_size=64, epochs=200, validation_data=(X_val_es, Y_val_es), callbacks=[best_callback], verbose = 0)
-        y_pred = np.where(model.predict(X_train) >0.5,1,0)
+
+        #evaluation
+        y_pred = np.where(model.predict(X_train) >0.5, 1,0)
         f1      = f1_score(Y_train, y_pred, average="macro")
         y_pred = np.where(model.predict(X_val) >0.5,1,0)
         val_f1  = f1_score(Y_val, y_pred, average="macro")
 
-        folds_f1.append(val_f1)
-        folds_results[name_fold] = {"f1": f1, "val_f1": val_f1}
+        results_folds["loss"].append(model.evaluate(X_train, Y_train, verbose = 0))
+        results_folds["val_loss"].append(model.evaluate(X_val, Y_val, verbose = 0))
+        results_folds["f1_macro"].append(f1)
+        results_folds["val_f1_macro"].append(val_f1)
 
+    result_cross_val =  {"hyper_parm": hyper_param, 
 
-    print({"hyper_parm": hyper_param, "mean": np.mean(folds_f1), "std": np.std(folds_f1)})
-    return {"hyper_parm": hyper_param, "mean": np.mean(folds_f1),"std": np.std(folds_f1), "folds": folds_results}
+                         "loss_mean": np.mean(results_folds["loss"]),
+                         "loss_std": np.std(results_folds["loss"]), 
+                         "f1_macro_mean": np.mean(results_folds["f1_macro"]),
+                         "f1_macro_std": np.std(results_folds["f1_macro"]),
+
+                         "val_loss_mean": np.mean(results_folds["val_loss"]),
+                         "val_loss_std": np.std(results_folds["val_loss"]), 
+                         "val_f1_macro_mean": np.mean(results_folds["val_f1_macro"]),
+                         "val_f1_macro_std": np.std(results_folds["val_f1_macro"]),
+
+                         "folds": results_folds}
+
+    print(result_cross_val)
+    return result_cross_val
 
 def gridsearch(grid, model, X, y, cv = 5, random_state = 42, shuffle = True, n_job = 1):
     param_grid = list(product_dict(**grid))

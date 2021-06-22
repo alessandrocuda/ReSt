@@ -32,3 +32,25 @@ class FCallback(Callback):
         logs['val_f1'] =  f1_score(y_t, y_p, average='macro')
         if self.verbose >0:
           print("— val_f1: {}".format(logs['val_f1']))
+
+
+class GapCallback(Callback):
+  
+    def __init__(self, train = (), validation = (), verbose = 0):
+        self.train = train
+        self.validation = validation
+        self.verbose = verbose
+
+    def on_train_begin(self, logs={}):
+        self.gap = []
+        self.val_gap = []
+    def on_epoch_end(self, epoch, logs=None):
+        y_t =  self.validation[1]
+        y_p =  np.where(self.model.predict(self.validation[0]) > 0.5, 1, 0)
+        val_f1 = f1_score(y_t, y_p, average='macro')
+        y_t =  self.train[1]
+        y_p =  np.where(self.model.predict(self.train[0]) > 0.5, 1, 0)
+        f1 = f1_score(y_t, y_p, average='macro')
+        logs['val_gap_f1'] =  np.abs( f1 - val_f1)
+        if self.verbose >0:
+            print("— val_gap_f1: {}".format(logs['val_gap_f1']))
