@@ -32,8 +32,8 @@ from sklearn.model_selection import train_test_split
 from gensim.models import KeyedVectors
 from gensim.test.utils import datapath
 
-from src.model_selection.gridsearch_mi import gridsearch
-from src.rest_cnn.kim_cnn_pos import kim_cnn_pos
+from src.model_selection.gridsearch_multi import gridsearch
+from src.rest_cnn.kim_cnn_pos import get_score
 from src.utils.utils import save_grid_result
 from src.data.utils import load_csv_to_dict, set_unkmark_token, load_data, to_emb
 from src.data.word_embedding import get_index_key_association, build_keras_embedding_matrix, get_index_key_pos_association, get_one_hot_pos
@@ -71,5 +71,5 @@ X_pos_e = to_emb(X_pos, index_to_onehot_pos)
 data = {"text": X_e, "pos": X_pos_e, "extra": X_extra_feature, "target": y}
 # grid search
 
-result = gridsearch(param_grid_dict, kim_cnn_pos, data, 5, 42, True, core)
+result = gridsearch(param_grid_dict, get_score, data, 5, 42, True, core)
 save_grid_result(outputfile, result)

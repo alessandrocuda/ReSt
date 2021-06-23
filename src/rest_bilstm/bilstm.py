@@ -55,3 +55,4 @@ def get_score(X_train, Y_train, X_val_es, Y_val_es, X_val, Y_val,  hyper_param):
     val_f1  = f1_score(Y_val, y_pred, average="macro")
     
     return  {"f1": f1, "val_f1": val_f1}
+    

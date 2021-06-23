@@ -1,4 +1,4 @@
-def kim_cnn_pos(input_shape, filters = 256, filter_sizes = [2,4,6], dropout = 0.5, hn=128, lr=0.01, print_model=False):
+def kim_cnn_pos(input_shape, input_shape_pos, filters = 256, filter_sizes = [2,4,6], dropout = 0.5, hn=128, lr=0.01, print_model=False):
     import tensorflow as tf
     from tensorflow.keras.models import Model
     from tensorflow.keras.layers import Dropout
@@ -10,7 +10,7 @@ def kim_cnn_pos(input_shape, filters = 256, filter_sizes = [2,4,6], dropout = 0.
     """ HyperParameters """
 
     text_seq_input = Input(shape=input_shape, name="text")
-    pos_seq_input = Input(shape=(65,16, ), name="pos")
+    pos_seq_input = Input(shape=input_shape_pos, name="pos")
     extra_feature = Input(shape=(8,), name="extra")
 
     convs = []
@@ -49,3 +49,25 @@ def kim_cnn_pos(input_shape, filters = 256, filter_sizes = [2,4,6], dropout = 0.
     )
 
     return model_cnn
+
+def get_score(X_train, Y_train, X_val_es, Y_val_es, X_val, Y_val,  hyper_param):
+    from src.utils.callbacks import ReturnBestEarlyStopping
+    import numpy as np
+    from sklearn.metrics import f1_score
+
+    input_shape_text = (X_train["text"][0].shape[0], X_train["text"][0].shape[1],)
+    input_shape_pos = (X_train["pos"][0].shape[0], )
+    model = kim_cnn_pos(input_shape_text, input_shape_pos, **hyper_param)
+    
+    best_callback = ReturnBestEarlyStopping(monitor="val_loss", patience=50, verbose=0, mode="min", restore_best_weights=True)
+    history = model.fit(X_train, Y_train, batch_size=64, epochs=200, validation_data=(X_val_es, Y_val_es), callbacks=[best_callback], verbose = 0)
+        
+    #evaluation
+    y_pred = np.where(model.predict(X_train) >0.5, 1,0)
+    f1      = f1_score(Y_train, y_pred, average="macro")
+    y_pred = np.where(model.predict(X_val) >0.5,1,0)
+    val_f1  = f1_score(Y_val, y_pred, average="macro")
+    loss = model.evaluate(X_train, Y_train, verbose = 0)
+    val_loss = model.evaluate(X_val, Y_val, verbose = 0)
+
+    return {"loss": loss, "val_loss": val_loss, "f1_macro": f1, "val_f1_macro": val_f1}
