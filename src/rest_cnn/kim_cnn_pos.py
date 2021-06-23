@@ -56,7 +56,7 @@ def get_score(X_train, Y_train, X_val_es, Y_val_es, X_val, Y_val,  hyper_param):
     from sklearn.metrics import f1_score
 
     input_shape_text = (X_train["text"][0].shape[0], X_train["text"][0].shape[1],)
-    input_shape_pos = (X_train["pos"][0].shape[0], )
+    input_shape_pos = (X_train["pos"][0].shape[0], X_train["pos"][0].shape[1] )
     model = kim_cnn_pos(input_shape_text, input_shape_pos, **hyper_param)
     
     best_callback = ReturnBestEarlyStopping(monitor="val_loss", patience=50, verbose=0, mode="min", restore_best_weights=True)
