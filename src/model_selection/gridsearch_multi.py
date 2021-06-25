@@ -66,7 +66,8 @@ def cross_val(get_score, data, kf, hyper_param):
 
                          "folds": results_folds}
 
-    print(result_cross_val)
+    #print(result_cross_val)
+    print("Val Macro F1: {}+/-{}".format(result_cross_val["val_f1_macro_mean"], result_cross_val["val_f1_macro_std"]))
     return result_cross_val
 
 def gridsearch(grid, model, data, cv = 5, random_state = 42, shuffle = True, n_job = 1):
