@@ -41,4 +41,4 @@ This library is free software; you can redistribute it and/or modify it under
 the terms of the MIT license.
 
 - **[MIT license](LICENSE)**
-- Copyright 2021 ©  <a href="https://alessandrocudazzo.it" target="_blank">Alessandro Cudazzo</a> - <a href="mailto:giuliavolpi25.93@gmail.com">Giulia Volpi</a> - <a href="">Nicola Ferella</a>
+- Copyright 2021 ©  <a href="https://alessandrocudazzo.it" target="_blank">Alessandro Cudazzo</a> - <a href="mailto:giuliavolpi25.93@gmail.com">Giulia Volpi</a>
