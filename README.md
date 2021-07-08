@@ -7,7 +7,7 @@ All the detalis can be found on the full report [here](https://github.com/alessa
 ## Table of Contents 
 - [Usage](#usage)
 - [Models](#models)
-- [Final Results](#Final Results)
+- [Results](#Results)
 - [Contributing](#contributing)
 - [Contact](#contact)
 - [Acknowledgments](#Acknowledgments)
@@ -45,7 +45,7 @@ All the models explored in this project are listed below and are all avaible as 
 
 
 
-## Final Results
+## Results
 | Model  | Macro F1-score Test |
 | ------------- | ------------- |
 | BERT  | 0.737  |
