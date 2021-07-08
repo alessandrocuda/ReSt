@@ -7,6 +7,7 @@ All the detalis can be found on the full report [here](https://github.com/alessa
 ## Table of Contents 
 - [Usage](#usage)
 - [Models](#models)
+- [Final Results](#Final Results)
 - [Contributing](#contributing)
 - [Contact](#contact)
 - [Acknowledgments](#Acknowledgments)
