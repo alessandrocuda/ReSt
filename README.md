@@ -1,9 +1,7 @@
 # ReSt - A Deep Learning Approach for Italian Stereotype Detection in Social Media
-## Abastract
+## Introduction
 The Hate Speech Detection (HaSpeeDe 2) task presented at Evalita 2020  was composed of the main task (hate speech detection) and two Pilot tasks (stereotype and nominal utterance detection). This paper aims to investigate different models for solving the stereotype detection task. Our study includes different types of neural networks such as convolutional neural networks (CNNs), recurrent neural networks model (BiLSTM), and BiLSTM with a soft-attention module. We also evaluated a BERT model by using an Italian pre-trained BERT and then fine-tuned the entire model for our classification task. In our experiments, it emerged that the choice of model and the combination of features extracted from the deep models was important. Moreover, with Bert, we noticed how pre-trained models on large datasets can give a significant improvement when applied to other tasks.
 
-## Introduction
-TBW
 
 ## Table of Contents 
 - [Usage](#usage)
@@ -12,8 +10,22 @@ TBW
 - [License](#license)
 
 ## Usage
-TBW
+This code requires Python 3.8 or later, to download the repository:
 
+`git clone https://github.com/alessandrocuda/ReSt`
+
+Then you need to install the basic dependencies to run the project on your system:
+
+```
+cd ReSt
+pip install -r requirements.txt
+```
+
+Download the [Italian Twitter Embeddings](http://www.italianlp.it/download-italian-twitter-embeddings/) and move to:
+
+`!mv twitter128.bin results/model/word2vec`
+
+and you are ready to go.
 
 ## Contributing
  
