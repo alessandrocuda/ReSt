@@ -1,6 +1,8 @@
 # ReSt - A Deep Learning Approach for Italian Stereotype Detection in Social Media
 ## Introduction
-The Hate Speech Detection (HaSpeeDe 2) task presented at Evalita 2020  was composed of the main task (hate speech detection) and two Pilot tasks (stereotype and nominal utterance detection). This paper aims to investigate different models for solving the stereotype detection task. Our study includes different types of neural networks such as convolutional neural networks (CNNs), recurrent neural networks model (BiLSTM), and BiLSTM with a soft-attention module. We also evaluated a BERT model by using an Italian pre-trained BERT and then fine-tuned the entire model for our classification task. In our experiments, it emerged that the choice of model and the combination of features extracted from the deep models was important. Moreover, with Bert, we noticed how pre-trained models on large datasets can give a significant improvement when applied to other tasks.
+The Hate Speech Detection (HaSpeeDe 2) task presented at Evalita 2020  was composed of the main task (hate speech detection) and two Pilot tasks (stereotype and nominal utterance detection). This project aims to investigate different models for solving the stereotype detection task. Our study includes different types of neural networks such as convolutional neural networks (CNNs), recurrent neural networks model (BiLSTM), and BiLSTM with a soft-attention module. We also evaluated a BERT model by using an Italian pre-trained BERT and then fine-tuned the entire model for our classification task. In our experiments, it emerged that the choice of model and the combination of features extracted from the deep models was important. Moreover, with Bert, we noticed how pre-trained models on large datasets can give a significant improvement when applied to other tasks.
+
+This project was developed for the course of [Human Language Technologies](https://elearning.di.unipi.it/course/view.php?id=180) at the University of Pisa under the guide of [Prof. Giuseppe Attardi](http://pages.di.unipi.it/attardi/).
 
 All the detalis can be found on the full report [here](https://github.com/alessandrocuda/ReSt/blob/main/report/HLT_Stereotype_detection_19_20.pdf).
 
@@ -10,7 +12,6 @@ All the detalis can be found on the full report [here](https://github.com/alessa
 - [Results](#Results)
 - [Contributing](#contributing)
 - [Contact](#contact)
-- [Acknowledgments](#Acknowledgments)
 - [License](#license)
 
 ## Usage
@@ -72,9 +73,6 @@ Alessandro Cudazzo - [@alessandrocuda](https://twitter.com/alessandrocuda) - ale
 Giulia Volpi - giuliavolpi25.93@gmail.com
 
 Project Link: [https://github.com/alessandrocuda/ReSt](https://github.com/alessandrocuda/ReSt)
-
-## Acknowledgments
-This project was developed for the course of [Human Language Technologies](https://elearning.di.unipi.it/course/view.php?id=180) at the University of Pisa under the guide of [Prof. Giuseppe Attardi](http://pages.di.unipi.it/attardi/).
 
 <!-- LICENSE -->
 ## License
