@@ -16,3 +16,6 @@ spacy_udpipe==1.0.0
 toolz==0.11.1
 transformers==4.8.2
 wordninja==2.0.0
+protobuf==3.20.3
+emoji==1.6.1
+lxml

@@ -147,6 +147,10 @@ class PreProcessor:
             pos.append(token.pos_)
             dep.append(token.dep_)
         return tokens, lemma, pos, dep
+        
+    def get_token(self, text):
+       tokens, lemma, pos, dep =  self.__udpipe(text)
+       return tokens
 
     def __percentage_bad_words(self, tokens):
         """
