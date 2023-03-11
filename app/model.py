@@ -6,9 +6,9 @@ root_project = os.path.abspath(os.getcwd())
 print(root_project)
 print(os.path.abspath("results/model/word2vec/twitter128.bin"))
 sys.path.append(os.path.abspath(os.getcwd()))
-sys.path.append(os.path.abspath("results/model/word2vec/twitter128.bin"))
-w2v_bin_path               = os.path.abspath("results/model/word2vec/twitter128.bin")
-
+sys.path.append("../")
+w2v_bin_path = os.path.abspath("../results/model/word2vec/twitter128.bin")
+model_path = os.path.abspath("../results/model/kcnn/kcnn.h5")
 import numpy as np
 
 from gensim.models import KeyedVectors
@@ -33,7 +33,7 @@ embedding_matrix, vocab_size = build_keras_embedding_matrix(w2v, index_to_key)
 dependencies = {
     'f1_macro': f1_macro
 }
-model = tf.keras.models.load_model(os.path.abspath("results/model/kcnn/kcnn.h5"), custom_objects=dependencies)
+model = tf.keras.models.load_model(model_path, custom_objects=dependencies)
 
 def preprocessing(text):
     preprocessed_input = prp.process_text(text)
