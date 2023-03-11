@@ -1,5 +1,3 @@
-root_project = "/Users/Alessandro/repo/ReSt/"
-w2v_bin_path               = root_project + 'results/model/word2vec/twitter128.bin'
 MAX_TEXT_LEN = 65
 
 import sys
@@ -9,6 +7,7 @@ print(root_project)
 print(os.path.abspath("results/model/word2vec/twitter128.bin"))
 sys.path.append(os.path.abspath(os.getcwd()))
 sys.path.append(os.path.abspath("results/model/word2vec/twitter128.bin"))
+w2v_bin_path               = os.path.abspath("results/model/word2vec/twitter128.bin")
 
 import numpy as np
 

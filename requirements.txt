@@ -19,3 +19,6 @@ wordninja==2.0.0
 protobuf==3.20.3
 emoji==1.6.1
 lxml
+flask
+python-dotenv
+requests
