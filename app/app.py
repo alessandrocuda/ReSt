@@ -22,8 +22,9 @@ def index_post():
 
     # Call render template, passing the translated text,
     # original text, and target language to the template
-    return render_template(
-        'results.html',
-        result=y,
-        original_text=original_text,
-    )
+    return render_template("index.html", output = y[0][0], text = original_text)
+    #return render_template(
+    #    'results.html',
+    #    result=y,
+    #    original_text=original_text,
+    #)

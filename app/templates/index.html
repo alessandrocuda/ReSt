@@ -10,15 +10,17 @@
 <body>
     <div class="container">
         <h1>Hate speech detection</h1>
-        <div>Enter the text you for the classification process!</div>
+        <div>Enter the text for the classification process!</div>
         <div>
             <form method="POST">
                 <div class="form-group">
                     <textarea name="text" cols="20" rows="10" class="form-control"></textarea>
                 </div>
                 <div>
-                    <button type="submit" class="btn btn-success">Translate!</button>
+                    <button type="submit" class="btn btn-success">Run the KCNN!</button>
                 </div>
+                <p style="text-align: center;">{{ text }}</p>
+                <p style="text-align: center;">{{ output }}</p>
             </form>
         </div>
     </div>
