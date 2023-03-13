@@ -18,10 +18,10 @@ def index_post():
     original_text = request.form['text']
     print(original_text)
 
+    # Execute the classification process with the KCNN model
     y = model.get_prediction(original_text)
 
-    # Call render template, passing the translated text,
-    # original text, and target language to the template
+    # Call render template, passing the output value,
     return render_template("index.html", output = y[0][0], text = original_text)
     #return render_template(
     #    'results.html',
