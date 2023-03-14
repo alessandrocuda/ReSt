@@ -15,6 +15,7 @@ All the detalis can be found on the full report [here](https://github.com/alessa
 - [License](#license)
 
 ## Usage
+### setup the repo
 This code requires Python 3.8 or later, to download the repository:
 
 `git clone https://github.com/alessandrocuda/ReSt`
@@ -31,6 +32,22 @@ Download the [Italian Twitter Embeddings](http://www.italianlp.it/download-itali
 `!mv twitter128.bin results/model/word2vec`
 
 and you are ready to go.
+
+### Docker file
+As an alternative, there is also a docker file that can instantiate a web app.
+
+You can build the docker image via:
+```
+cd ReSt/app
+docker build -t rest .
+```
+and then you have to run it in the following way:
+`docker run -dp 3000:3000 rest`
+
+After that you can access to the webapp by using the following url:
+`localhost:3000`
+
+
 
 ## Models 
 All the models explored in this project are listed below and are all avaible as H5 tensorflow models in the [results](https://github.com/alessandrocuda/ReSt/tree/main/results/model) folder:
